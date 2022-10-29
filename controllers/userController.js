@@ -1,8 +1,9 @@
 const User = require('../models/user')
+const {authServices} = require('../services')
 
 // ----------------CONSULTAR-------------------
 const signIn = (req,res) =>{
-    const { email } = req.body
+    const { email,password } = req.body
 
     if(!email){
         return res.status(400).send({messsage:"el campo email es requerido"})
@@ -15,8 +16,11 @@ const signIn = (req,res) =>{
         if(!user){
             res.status(404).send({message:"no se encontro un usuario con el email ingresado"})
         }
+        if(!(password && user.comparePassword(password))){
+            res.status(401).send({message:"El usuario o la clave son incorrectos"})
+        }
 
-        res.status(200).send({message:"Te has logueado correctamente",token:""})
+        res.status(200).send({message:"Te has logueado correctamente",token: authServices.createToken(user)})
     })
 }
 
@@ -39,8 +43,8 @@ const signUp = (req,res) =>{
             if(error){
                 return res.status(500).send('se produjo un error' + error)
             }
+            res.status(200).send({message:"Te has registrado correctamente",token: authServices.createToken(newUser)})
         })
-        res.status(200).send({message:"Te has registrado correctamente",token:""})
     })
 }
 

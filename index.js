@@ -22,9 +22,15 @@ app.use('/api', routes)
 
 
 // SERVER
-app.listen(process.env.PORT,(error)=>{
- if(error){
-    console.log(`Hubo un error en el servidor ${error}`)
- }
- console.log(`Servidor en marcha en el puerto ${process.env.PORT}`)
+mongoose.connect(process.env.MONGO_DB,{useNewUrlParser:true},(error,response)=>{
+   if(error){
+      return console.log('Error al conectarse a la base de datos ' + error)
+   }
+   console.log('Conexion a la base de datos establecida')
+   app.listen(process.env.PORT,(error)=>{
+    if(error){
+       console.log(`Hubo un error en el servidor ${error}`)
+    }
+    console.log(`Servidor en marcha en el puerto ${process.env.PORT}`)
+   })
 })
