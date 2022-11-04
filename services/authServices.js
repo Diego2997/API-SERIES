@@ -1,29 +1,30 @@
-const jwt = require('jwt-simple')
-const {DateTime} = require('luxon')
+const jwt = require("jwt-simple");
+const { DateTime } = require("luxon");
 
-const createToken = (user) =>{
- const payload = {
+const createToken = (user) => {
+  const payload = {
     sub: user._id,
     iat: DateTime.now().toMillis(),
-    exp: DateTime.now().plus({days:14}).toMillis()
- }
- return jwt.encode(payload,process.env.SECRET_TOKEN)
-}
+    exp: DateTime.now().plus({ day: 14 }).toMillis(),
+  };
 
-const decodeToken = async (token) =>{
-     try {
-        const payload = jwt.decode(token,process.env.SECRET_TOKEN)
-        if(payload.exp <= DateTime.now().toMillis()){
-            return {status:401,message:"el token ha expirado"}
-        }
+  return jwt.encode(payload, process.env.SECRET_TOKEN);
+};
 
-        return payload.sub
-     } catch (error) {
-        console.log(error)
-     }
-}
+const decodeToken = async (token) => {
+  try {
+    const payload = jwt.decode(token, process.env.SECRET_TOKEN);
+    if (payload.exp <= DateTime.now().toMillis()) {
+      return { status: 401, message: "El token ha expirado" };
+    }
+
+    return payload.sub;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
-    createToken,
-    decodeToken
-}
+  createToken,
+  decodeToken,
+};

@@ -18,13 +18,16 @@ const signIn = (req, res) => {
         .status(400)
         .send({ message: "No se encontro un usuario con el email ingresado" });
     }
-    res
-      .status(200)
-      .send({ message: "Te has logueado correactamente", token: "" });
+    if (!(password && user.comparePassword(password))) {
+      res
+        .status(401)
+        .send({ message: "El usuario o la clave son incorrectos" });
+    }
+    res.status(200).send({
+      message: "Te has logueado correctamente",
+      token: authServices.createToken(user),
+    });
   });
-  // if(!(password && user.comparePassword(password))){
-  //     res.status(401).send({message:"El usuario o la clave son incorrectos"})
-  // }
 };
 
 // ---------CREAR---------------------------------
@@ -45,16 +48,19 @@ const signUp = (req, res) => {
       password: password,
     });
     newUser.save((error) => {
-      return res.status(500).send("Se produjo un error", error);
+      if (error) {
+        return res.status(500).send(`Se produjo un error, ${error}`);
+      }
+      res.status(200).send({
+        message: "Te has registrado correctamente",
+        token: authServices.createToken(newUser),
+      });
     });
   });
-  res
-    .status(200)
-    .send({ message: "Te has logueado correactamente", token: "" });
 };
 
 const sayHi = (req, res) => {
-  //TODO
+  res.status(200).send({ message: `Hola usuario con id ${req.user}` });
 };
 
 module.exports = {
