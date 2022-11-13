@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const { authServices } = require("../services");
+const { authServices, userService } = require("../services");
 
 // ----------------CONSULTAR-------------------
 const signIn = (req, res) => {
@@ -34,29 +34,17 @@ const signIn = (req, res) => {
 const signUp = (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email }, (error, user) => {
-    if (error) {
-      return res.status(500).send("Hubo un error al registrarse", error);
-    }
-    if (user) {
-      return res
-        .status(400)
-        .send({ message: "El email ya se encuentra en uso" });
-    }
-    const newUser = new User({
-      email: email,
-      password: password,
-    });
-    newUser.save((error) => {
-      if (error) {
-        return res.status(500).send(`Se produjo un error, ${error}`);
-      }
-      res.status(200).send({
-        message: "Te has registrado correctamente",
-        token: authServices.createToken(newUser),
-      });
-    });
+  const newUser = new User({
+    email,
+    password,
   });
+  if (!newUser.email) {
+    return res.status(403).send({ message: "el campo email es requerido" });
+  } else if (!newUser.password) {
+    return res.status(403).send({ message: "el campo password es requerido" });
+  }
+
+  userService.signUp(newUser);
 };
 
 const sayHi = (req, res) => {
