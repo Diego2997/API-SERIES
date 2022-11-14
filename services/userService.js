@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const { authServices } = require("./authServices");
+const authServices = require("./authServices");
 
 const signUp = (email, password) => {
   return new Promise((resolve, reject) => {

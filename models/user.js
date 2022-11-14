@@ -6,6 +6,7 @@ const UserSchema = new Schema({
   email: { type: String, required: true, lowercase: true, uniqued: true },
   password: { type: String, required: true },
   registerDate: { type: Date, default: Date.now() },
+  products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
 });
 
 UserSchema.pre("save", function (next) {

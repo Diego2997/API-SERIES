@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const { authServices, userService } = require("../services");
+const { validationResult } = require("express-validator");
 
 // ----------------CONSULTAR-------------------
 const signIn = (req, res) => {
@@ -33,20 +34,20 @@ const signIn = (req, res) => {
 // ---------CREAR---------------------------------
 const signUp = async (req, res) => {
   try {
+    const resultValidationReq = validationResult(req);
+    const hasError = !resultValidationReq.isEmpty();
+
+    if (hasError) {
+      console.log("hay un error");
+      return res.status(400).send(resultValidationReq);
+    }
     const { email, password } = req.body;
 
-    if (!email) {
-      return res.status(403).send({ message: "el campo email es requerido" });
-    } else if (!password) {
-      return res
-        .status(403)
-        .send({ message: "el campo password es requerido" });
-    }
     //RESOLVIENDO CON ASYNC AWAIT
-    const result = await userService
-      .signUp(email, password)
-      .catch((error) => error);
-    res.status(result.status).send(result);
+    // const result = await userService
+    //   .signUp(email, password)
+    //   .catch((error) => error);
+    // res.status(result.status).send(result);
 
     //RESOLVIENDO CON PROMESAS
     userService

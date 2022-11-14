@@ -1,10 +1,20 @@
 const express = require("express");
-const { userController } = require("../controllers");
-const { isAuth } = require("../middlewares");
 const api = express.Router();
 
+// CONTROLLERS
+const { userController } = require("../controllers");
+const { productController } = require("../controllers");
+
+// SCHEMAS
+const { userSchema } = require("../controllers/schemas");
+
+// AUTH TOKEN
+const { isAuth } = require("../middlewares");
+
 api.post("/login", userController.signIn);
-api.post("/register", userController.signUp);
+api.post("/register", userSchema, userController.signUp);
 api.get("/hi", isAuth, userController.sayHi);
+
+api.post("/product", productController.createProduct);
 
 module.exports = api;
