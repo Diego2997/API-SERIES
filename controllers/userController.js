@@ -31,20 +31,35 @@ const signIn = (req, res) => {
 };
 
 // ---------CREAR---------------------------------
-const signUp = (req, res) => {
-  const { email, password } = req.body;
+const signUp = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  const newUser = new User({
-    email,
-    password,
-  });
-  if (!newUser.email) {
-    return res.status(403).send({ message: "el campo email es requerido" });
-  } else if (!newUser.password) {
-    return res.status(403).send({ message: "el campo password es requerido" });
+    if (!email) {
+      return res.status(403).send({ message: "el campo email es requerido" });
+    } else if (!password) {
+      return res
+        .status(403)
+        .send({ message: "el campo password es requerido" });
+    }
+    //RESOLVIENDO CON ASYNC AWAIT
+    const result = await userService
+      .signUp(email, password)
+      .catch((error) => error);
+    res.status(result.status).send(result);
+
+    //RESOLVIENDO CON PROMESAS
+    userService
+      .signUp(email, password)
+      .then((result) => {
+        res.status(200).send(result);
+      })
+      .catch((error) => {
+        res.status(500).send(error);
+      });
+  } catch (error) {
+    res.status(500).send(error);
   }
-
-  userService.signUp(newUser);
 };
 
 const sayHi = (req, res) => {
