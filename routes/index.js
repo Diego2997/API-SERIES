@@ -2,8 +2,7 @@ const express = require("express");
 const api = express.Router();
 
 // CONTROLLERS
-const { userController } = require("../controllers");
-const { productController } = require("../controllers");
+const { userController, productController } = require("../controllers");
 
 // SCHEMAS
 const { userSchema } = require("../controllers/schemas");
