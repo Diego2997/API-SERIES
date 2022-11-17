@@ -2,7 +2,11 @@ const express = require("express");
 const api = express.Router();
 
 // CONTROLLERS
-const { userController, productController } = require("../controllers");
+const {
+  userController,
+  serieController,
+  chapterController,
+} = require("../controllers");
 
 // SCHEMAS
 const { userSchema } = require("../controllers/schemas");
@@ -14,6 +18,15 @@ api.post("/login", userController.signIn);
 api.post("/register", userSchema, userController.signUp);
 api.get("/hi", isAuth, userController.sayHi);
 
-api.post("/product", productController.createProduct);
+api.get("/serie", serieController.getSeries);
+api.get("/serie/:id", serieController.getOneSerie);
+api.post("/serie", serieController.createSerie);
+api.put("/serie/:id", serieController.updateSerie);
+api.delete("/serie/:id", serieController.deleteSerie);
+
+api.get("/chapter", chapterController.getChapters);
+api.post("/chapter", chapterController.createChapter);
+api.put("/chapter/:id", chapterController.updateChapter);
+api.delete("/chapter/:id", chapterController.deleteChapter);
 
 module.exports = api;

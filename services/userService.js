@@ -29,6 +29,34 @@ const signUp = (email, password) => {
   });
 };
 
+const signIn = (email, password) => {
+  return new Promise((resolve, reject) => {
+    User.findOne({ email }, (error, user) => {
+      if (error) {
+        reject({ status: 500, send: "Hubo un error", error });
+      }
+      if (!user) {
+        reject({
+          status: 400,
+          message: "No se encontro un usuario con el email ingresado",
+        });
+      }
+      if (!(password && user.comparePassword(password))) {
+        reject({
+          status: 401,
+          message: "El usuario o la clave son incorrectos",
+        });
+      }
+      resolve({
+        status: 200,
+        message: "Te has logueado correctamente",
+        token: authServices.createToken(user),
+      });
+    });
+  });
+};
+
 module.exports = {
   signUp,
+  signIn,
 };

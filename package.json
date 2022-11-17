@@ -1,11 +1,11 @@
 {
-  "name": "clase-5-backend",
+  "name": "tp2backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start" : "nodemon -r dotenv/config index.js",
-    "dev":"nodemon node --exec index.js -r dotenv/config dotenv_config_path=./.env.development"
+    "start": "nodemon -r dotenv/config index.js",
+    "dev": "nodemon node --exec index.js -r dotenv/config dotenv_config_path=./.env.development"
   },
   "keywords": [],
   "author": "Diego",

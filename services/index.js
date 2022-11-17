@@ -1,8 +1,8 @@
 const authServices = require("./authServices");
 const userService = require("./userService");
-const productService = require("./productService");
+const serieService = require("./serieService");
 module.exports = {
   authServices,
   userService,
-  productService,
+  serieService,
 };

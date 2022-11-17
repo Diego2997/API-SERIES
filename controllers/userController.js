@@ -1,38 +1,8 @@
-const User = require("../models/user");
-const { authServices, userService } = require("../services");
+const { userService } = require("../services");
 const { validationResult } = require("express-validator");
 
 // ----------------CONSULTAR-------------------
-const signIn = (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email) {
-    return res.status(400).send("El campo email es requerido");
-  }
-  User.findOne({ email }, (error, user) => {
-    if (error) {
-      return res.status(500).send("Hubo un error", error);
-    }
-    if (!user) {
-      //TODO
-      return res
-        .status(400)
-        .send({ message: "No se encontro un usuario con el email ingresado" });
-    }
-    if (!(password && user.comparePassword(password))) {
-      res
-        .status(401)
-        .send({ message: "El usuario o la clave son incorrectos" });
-    }
-    res.status(200).send({
-      message: "Te has logueado correctamente",
-      token: authServices.createToken(user),
-    });
-  });
-};
-
-// ---------CREAR---------------------------------
-const signUp = async (req, res) => {
+const signIn = async (req, res) => {
   try {
     const resultValidationReq = validationResult(req);
     const hasError = !resultValidationReq.isEmpty();
@@ -42,6 +12,38 @@ const signUp = async (req, res) => {
       return res.status(400).send(resultValidationReq);
     }
     const { email, password } = req.body;
+
+    //RESOLVIENDO CON ASYNC AWAIT
+    // const result = await userService
+    //   .signUp(email, password)
+    //   .catch((error) => error);
+    // res.status(result.status).send(result);
+
+    //RESOLVIENDO CON PROMESAS
+    userService
+      .signIn(email, password)
+      .then((result) => {
+        res.status(200).send(result);
+      })
+      .catch((error) => {
+        res.status(500).send(error);
+      });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+// ---------CREAR---------------------------------
+const signUp = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const resultValidationReq = validationResult(req);
+    const hasError = !resultValidationReq.isEmpty();
+
+    if (hasError) {
+      console.log("hay un error");
+      return res.status(400).send(resultValidationReq);
+    }
 
     //RESOLVIENDO CON ASYNC AWAIT
     // const result = await userService
