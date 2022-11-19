@@ -1,4 +1,5 @@
 const { serieService } = require("../services");
+const { validationResult } = require("express-validator");
 
 const getSeries = async (req, res) => {
   try {
@@ -29,10 +30,16 @@ const getOneSerie = async (req, res) => {
 };
 
 const updateSerie = async (req, res) => {
-  const { title, description, url, category } = req.body;
-  const { id } = req.params;
-
   try {
+    const { title, description, url, category } = req.body;
+    const { id } = req.params;
+    const resultValidationReq = validationResult(req);
+    const hasError = !resultValidationReq.isEmpty();
+
+    if (hasError) {
+      console.log("Hay un error");
+      return res.status(400).send(resultValidationReq);
+    }
     const result = await serieService.updateSerie(
       id,
       title,

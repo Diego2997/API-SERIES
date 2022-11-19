@@ -7,6 +7,12 @@ const getSeries = () => {
       if (error) {
         reject(error);
       }
+      if (!result) {
+        reject({
+          status: 500,
+          message: "No hay series",
+        });
+      }
       resolve(result);
     });
   });

@@ -38,13 +38,15 @@ const signIn = (email, password) => {
       if (!user) {
         reject({
           status: 400,
-          message: "No se encontro un usuario con el email ingresado",
+          message: "El usuario o la clave son incorrectos",
+          error,
         });
       }
       if (!(password && user.comparePassword(password))) {
         reject({
           status: 401,
           message: "El usuario o la clave son incorrectos",
+          error,
         });
       }
       resolve({

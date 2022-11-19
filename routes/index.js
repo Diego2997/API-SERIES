@@ -9,7 +9,11 @@ const {
 } = require("../controllers");
 
 // SCHEMAS
-const { userSchema } = require("../controllers/schemas");
+const {
+  userSchema,
+  chapterSchema,
+  serieSchema,
+} = require("../controllers/schemas");
 
 // AUTH TOKEN
 const { isAuth } = require("../middlewares");
@@ -25,7 +29,7 @@ api.put("/serie/:id", serieController.updateSerie);
 api.delete("/serie/:id", serieController.deleteSerie);
 
 api.get("/chapter", chapterController.getChapters);
-api.post("/chapter", chapterController.createChapter);
+api.post("/chapter", serieSchema, chapterController.createChapter);
 api.put("/chapter/:id", chapterController.updateChapter);
 api.delete("/chapter/:id", chapterController.deleteChapter);
 
