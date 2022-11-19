@@ -1,36 +1,26 @@
 const { check } = require("express-validator");
-// TODO
 module.exports = [
   check("title")
-    .isEmail()
     .notEmpty()
-    .withMessage("el campo email es requerido")
+    .withMessage("el campo title es requerido")
     .isString()
-    .custom((value, {}) => value.includes("@") && value.includes(".com"))
-    .withMessage("el email ingresado no es valido"),
+    .withMessage("El campo title debe ser un String"),
 
-  check("desription")
-    .exists()
+  check("description")
     .notEmpty()
-    .withMessage("El campo password es requerido")
-    .isLength({ min: 4, max: 16 })
-    .withMessage(
-      "La contraseña debe tener un minimo de 4 caracteres y maximo 16"
-    ),
+    .withMessage("El campo desription es requerido")
+    .isString()
+    .withMessage("El campo description debe ser un String"),
+
   check("url")
-    .exists()
     .notEmpty()
-    .withMessage("El campo password es requerido")
-    .isLength({ min: 4, max: 16 })
-    .withMessage(
-      "La contraseña debe tener un minimo de 4 caracteres y maximo 16"
-    ),
+    .withMessage("El campo url es requerido")
+    .isString()
+    .withMessage("El campo url debe ser un String"),
+
   check("category")
-    .exists()
     .notEmpty()
-    .withMessage("El campo password es requerido")
-    .isLength({ min: 4, max: 16 })
-    .withMessage(
-      "La contraseña debe tener un minimo de 4 caracteres y maximo 16"
-    ),
+    .withMessage("El campo category es requerido")
+    .isString()
+    .withMessage("El campo category debe ser un String"),
 ];

@@ -9,7 +9,11 @@ const {
 } = require("../controllers");
 
 // SCHEMAS
-const { userSchema } = require("../controllers/schemas");
+const {
+  userSchema,
+  serieSchema,
+  chapterSchema,
+} = require("../controllers/schemas");
 
 // AUTH TOKEN
 const { isAuth } = require("../middlewares");
@@ -20,13 +24,13 @@ api.get("/hi", isAuth, userController.sayHi);
 
 api.get("/serie", serieController.getSeries);
 api.get("/serie/:id", serieController.getOneSerie);
-api.post("/serie", serieController.createSerie);
-api.put("/serie/:id", serieController.updateSerie);
+api.post("/serie", serieSchema, serieController.createSerie);
+api.put("/serie/:id", serieSchema, serieController.updateSerie);
 api.delete("/serie/:id", serieController.deleteSerie);
 
-api.get("/chapter", chapterController.getChapters);
-api.post("/chapter", chapterController.createChapter);
-api.put("/chapter/:id", chapterController.updateChapter);
+api.get("/:title", chapterController.getChapters);
+api.post("/chapter", chapterSchema, chapterController.createChapter);
+api.put("/chapter/:id", chapterSchema, chapterController.updateChapter);
 api.delete("/chapter/:id", chapterController.deleteChapter);
 
 module.exports = api;
