@@ -14,12 +14,13 @@ const getOneSerie = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await serieService.getOneSerie(id);
-    const { _id, title, description, url } = result;
+    const { _id, title, description, url, chapters } = result;
     res.status(200).send({
       id: _id,
       title,
       description,
       url,
+      chapters,
     });
   } catch (error) {
     res.status(500).send(error);

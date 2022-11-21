@@ -7,6 +7,7 @@ const getSeries = () => {
       if (error) {
         reject(error);
       }
+      const { title, description, url } = result;
       resolve(result);
     });
   });
